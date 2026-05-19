@@ -3,373 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ</title>
+    <title>แบบทดสอบแนวคิดเชิงคำนวณ ม.4</title>
     <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --border: #cbd5e1;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
             padding: 20px;
-            user-select: none; /* ป้องกันการก๊อปปี้โจทย์ */
+            user-select: none; /* ป้องกันการก๊อปปี้ */
         }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .notice {
-            text-align: center;
-            color: #e74c3c;
-            font-weight: bold;
-            margin-bottom: 30px;
-            font-size: 0.95em;
-        }
-        /* ส่วนกรอกข้อมูลนักเรียนแบบ Grid */
-        .student-info-block {
-            background-color: #f1f5f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border: 1px solid #cbd5e1;
+
+        h1 { text-align: center; color: var(--primary); margin-bottom: 10px; }
+        .notice { text-align: center; color: #ef4444; font-weight: bold; margin-bottom: 30px; }
+
+        /* ส่วนกรอกข้อมูลนักเรียน (Grid Layout) */
+        .info-grid {
             display: grid;
-            grid-template-columns: 2fr 3fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 2fr; 
             gap: 15px;
+            background: #f1f5f9;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
         }
-        @media (max-width: 768px) {
-            .student-info-block {
-                grid-template-columns: 1fr;
-            }
+
+        .info-grid-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px;
+            margin-top: 15px;
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
+
+        @media (max-width: 600px) {
+            .info-grid, .info-grid-row-2 { grid-template-columns: 1fr; }
         }
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #334155;
-            font-size: 0.95em;
-        }
+
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: 600; font-size: 0.9em; }
         .form-group input, .form-group select {
-            padding: 10px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 1em;
-            outline: none;
-            background-color: white;
-        }
-        .form-group input:focus, .form-group select:focus {
-            border-color: #3b82f6;
-        }
-        .name-wrapper {
-            display: flex;
-            gap: 8px;
-        }
-        .name-wrapper select {
-            flex: 0 0 95px;
-        }
-        .name-wrapper input {
-            flex: 1;
-        }
-        /* ส่วนโจทย์ขัอสอบ */
-        .question-block {
-            margin-bottom: 25px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background-color: #f8fafc;
-        }
-        .question-text {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            color: #1e293b;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
             padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             font-size: 1em;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        textarea:focus {
-            border-color: #3b82f6;
             outline: none;
+            transition: 0.3s;
         }
-        .live-status {
-            margin-top: 8px;
-            font-size: 0.9em;
-            display: flex;
-            justify-content: space-between;
-            color: #64748b;
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+        /* ส่วนข้อสอบ */
+        .question-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
-        .progress-bar-container {
-            width: 100%;
-            background-color: #e2e8f0;
-            border-radius: 4px;
-            margin-top: 5px;
-            height: 8px;
-            overflow: hidden;
+        .q-text { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; display: block; }
+        textarea {
+            width: 100%; height: 100px; padding: 15px; border-radius: 8px;
+            border: 1px solid var(--border); resize: vertical; font-size: 1em; box-sizing: border-box;
         }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #10b981;
-            transition: width 0.3s;
+
+        .status-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 10px; font-size: 0.85em; color: #64748b;
         }
-        .score-display {
-            font-weight: bold;
-            color: #0f172a;
-        }
+        .progress-container { width: 100%; background: #e2e8f0; height: 6px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
+        .progress-bar { height: 100%; width: 0%; background: var(--primary); transition: 0.4s; }
+
         .btn-submit {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
+            width: 100%; padding: 18px; background: var(--primary); color: white;
+            border: none; border-radius: 10px; font-size: 1.2em; font-weight: bold;
+            cursor: pointer; transition: 0.3s; margin-top: 20px;
         }
-        .btn-submit:hover {
-            background-color: #2563eb;
-        }
-        #result-section {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #ecfdf5;
-            border: 2px solid #10b981;
-            border-radius: 8px;
-            display: none;
-            text-align: center;
+        .btn-submit:hover { background: #1d4ed8; transform: translateY(-2px); }
+        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        #result {
+            display: none; text-align: center; margin-top: 30px; padding: 30px;
+            background: #ecfdf5; border-radius: 12px; border: 2px solid #10b981;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>📝 กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ (ม.4)</h1>
-    <div class="notice">⚠️ ห้ามคัดลอกข้อความมาวางเด็ดขาด (ต้องพิมพ์ตอบด้วยตัวเองเท่านั้น) • ข้อละ 3 คะแนน</div>
-    
-    <div class="student-info-block">
+    <h1>📝 แบบทดสอบแนวคิดเชิงคำนวณ</h1>
+    <p class="notice">⚠️ บังคับพิมพ์ตอบเท่านั้น (ห้ามวางข้อความ) • ข้อละ 3 คะแนน</p>
+
+    <div class="info-grid">
         <div class="form-group">
-            <label for="student-id">1. เลขประจำตัวนักเรียน</label>
-            <input type="text" id="student-id" placeholder="ระบุเลขประจำตัว" required>
+            <label>เลขประจำตัวนักเรียน</label>
+            <input type="text" id="studentId" placeholder="เช่น 12345">
         </div>
         <div class="form-group">
-            <label for="student-name">2-3. ชื่อ-นามสกุล</label>
-            <div class="name-wrapper">
-                <select id="name-title">
-                    <option value="นาย">นาย</option>
-                    <option value="นางสาว">นางสาว</option>
-                </select>
-                <input type="text" id="student-name" placeholder="ชื่อ และ นามสกุล" required>
-            </div>
+            <label>คำนำหน้าชื่อ</label>
+            <select id="prefix">
+                <option value="นาย">นาย</option>
+                <option value="นางสาว">นางสาว</option>
+            </select>
         </div>
         <div class="form-group">
-            <label for="student-no">4. เลขที่</label>
-            <input type="number" id="student-no" placeholder="เลขที่" min="1" required>
+            <label>ชื่อ - นามสกุล</label>
+            <input type="text" id="fullName" placeholder="ไม่ต้องระบุคำนำหน้า">
+        </div>
+    </div>
+    <div class="info-grid-row-2" style="max-width: 400px; margin: 15px auto 30px auto;">
+        <div class="form-group">
+            <label>เลขที่</label>
+            <input type="number" id="studentNo" placeholder="เช่น 1">
         </div>
         <div class="form-group">
-            <label for="student-class">5. ห้อง</label>
-            <input type="text" id="student-class" placeholder="ม.4/X" required>
+            <label>ห้อง (ม.4/X)</label>
+            <input type="text" id="studentClass" placeholder="เช่น ม.4/1">
         </div>
     </div>
 
-    <div id="quiz-form">
-        <div class="question-block">
-            <div class="question-text">ข้อ 1: อธิบายความหมายและประโยชน์ของ "แนวคิดการแยกย่อย" (Decomposition) ในการแก้ปัญหามาให้เข้าใจ</div>
-            <textarea id="ans-1" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(1)"></textarea>
-            <div class="live-status">
-                <span>ความถูกต้อง: <span id="percent-1">0</span>%</span>
-                <span class="score-display">คะแนนปัจจุบัน: <span id="score-1">0.0</span> / 3</span>
-            </div>
-            <div class="progress-bar-container"><div id="bar-1" class="progress-bar"></div></div>
-        </div>
+    <div id="quiz-area">
+        <script>
+            const questions = [
+                "จงอธิบายความหมายและประโยชน์ของ 'แนวคิดการแยกย่อย' (Decomposition) ในการแก้ปัญหา",
+                "จงยกตัวอย่างการใช้ 'แนวคิดการจดจำรูปแบบ' (Pattern Recognition) ในชีวิตประจำวัน",
+                "ทำไม 'แนวคิดเชิงนามธรรม' (Abstraction) ถึงสำคัญในการสร้างแบบจำลองหรือแผนผัง",
+                "ลักษณะของ 'อัลกอริทึม' (Algorithm) ที่ดีควรเป็นอย่างไร และทำไมต้องชัดเจน",
+                "แนวคิดเชิงคำนวณสามารถนำไปใช้แก้ปัญหาที่ไม่เกี่ยวกับคอมพิวเตอร์ได้อย่างไร จงยกตัวอย่าง"
+            ];
 
-        <div class="question-block">
-            <div class="question-text">ข้อ 2: "แนวคิดการจดจำรูปแบบ" (Pattern Recognition) ช่วยให้เราสามารถแก้ปัญหาได้เร็วขึ้นได้อย่างไร จงยกตัวอย่างสถานการณ์ในชีวิตประจำวัน</div>
-            <textarea id="ans-2" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(2)"></textarea>
-            <div class="live-status">
-                <span>ความถูกต้อง: <span id="percent-2">0</span>%</span>
-                <span class="score-display">คะแนนปัจจุบัน: <span id="score-2">0.0</span> / 3</span>
-            </div>
-            <div class="progress-bar-container"><div id="bar-2" class="progress-bar"></div></div>
-        </div>
-
-        <div class="question-block">
-            <div class="question-text">ข้อ 3: การคิดแบบ "แนวคิดเชิงนามธรรม" (Abstraction) คืออะไร และทำไมการสร้างแผนที่รถไฟฟ้าจึงต้องตัดรายละเอียดบางอย่างออก</div>
-            <textarea id="ans-3" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(3)"></textarea>
-            <div class="live-status">
-                <span>ความถูกต้อง: <span id="percent-3">0</span>%</span>
-                <span class="score-display">คะแนนปัจจุบัน: <span id="score-3">0.0</span> / 3</span>
-            </div>
-            <div class="progress-bar-container"><div id="bar-3" class="progress-bar"></div></div>
-        </div>
-
-        <div class="question-block">
-            <div class="question-text">ข้อ 4: "แนวคิดการออกแบบอัลกอริทึม" (Algorithm Design) มีความสำคัญอย่างไร และการเขียนขั้นตอนวิธีที่ดีควรมีลักษณะอย่างไร</div>
-            <textarea id="ans-4" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(4)"></textarea>
-            <div class="live-status">
-                <span>ความถูกต้อง: <span id="percent-4">0</span>%</span>
-                <span class="score-display">คะแนนปัจจุบัน: <span id="score-4">0.0</span> / 3</span>
-            </div>
-            <div class="progress-bar-container"><div id="bar-4" class="progress-bar"></div></div>
-        </div>
-
-        <div class="question-block">
-            <div class="question-text">ข้อ 5: จงอธิบายว่า เหตุใด "แนวคิดเชิงคำนวณ" จึงไม่ได้จำกัดอยู่แค่การพัฒนาซอฟต์แวร์คอมพิวเตอร์ แต่มนุษย์สามารถนำไปใช้แก้ปัญหาทั่วไปได้</div>
-            <textarea id="ans-5" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(5)"></textarea>
-            <div class="live-status">
-                <span>ความถูกต้อง: <span id="percent-5">0</span>%</span>
-                <span class="score-display">คะแนนปัจจุบัน: <span id="score-5">0.0</span> / 3</span>
-            </div>
-            <div class="progress-bar-container"><div id="bar-5" class="progress-bar"></div></div>
-        </div>
-
-        <button class="btn-submit" id="btn-submit" onclick="submitQuiz()">ส่งคำตอบและบันทึกข้อมูล</button>
+            questions.forEach((q, i) => {
+                document.write(`
+                    <div class="question-card">
+                        <span class="q-text">ข้อที่ ${i+1}: ${q}</span>
+                        <textarea id="ans-${i+1}" placeholder="พิมพ์คำตอบที่นี่..." oninput="checkLiveProgress(${i+1})"></textarea>
+                        <div class="status-row">
+                            <span>ความถูกต้อง: <span id="perc-${i+1}">0</span>%</span>
+                            <span>คะแนน: <span id="score-${i+1}">0.0</span> / 3</span>
+                        </div>
+                        <div class="progress-container"><div id="bar-${i+1}" class="progress-bar"></div></div>
+                    </div>
+                `);
+            });
+        </script>
     </div>
 
-    <div id="result-section">
-        <h2>🎉 สรุปผลการทดสอบ</h2>
-        <p style="font-size: 1.6em; font-weight: bold; color: #10b981;">คะแนนรวมของคุณคือ: <span id="total-score">0</span> / 15 คะแนน</p>
-        <p id="status-sheet" style="color: #64748b; font-size: 0.9em;">กำลังบันทึกข้อมูลลง Google Sheets...</p>
+    <button class="btn-submit" id="submitBtn" onclick="submit()">ส่งข้อสอบและบันทึกข้อมูล</button>
+
+    <div id="result">
+        <h2 style="color: #065f46;">✅ ส่งข้อมูลเรียบร้อยแล้ว</h2>
+        <p style="font-size: 1.4em;">คะแนนรวมของคุณคือ: <span id="totalScore">0</span> / 15</p>
+        <p id="saveMsg">กำลังบันทึกข้อมูลลง Google Sheets...</p>
     </div>
 </div>
 
 <script>
-    const keywords = {
-        1: ["ย่อย", "แยก", "เล็กลง", "ส่วนประกอบ", "ง่าย", "decomposition"],
-        2: ["ซ้ำ", "คล้าย", "เหมือน", "รูปแบบ", "เคยเจอ", "pattern"],
-        3: ["สำคัญ", "ตัดออก", "ไม่จำเป็น", "แก่น", "นามธรรม", "abstraction"],
-        4: ["ขั้นตอน", "ลำดับ", "เป็นระบบ", "ชัดเจน", "ทีละขั้น", "algorithm"],
-        5: ["ชีวิตประจำวัน", "มนุษย์", "แก้ปัญหา", "คิดอย่างเป็นระบบ", "คอมพิวเตอร์"]
-    };
+    const keywords = [
+        ["ย่อย", "เล็ก", "แบ่ง", "ง่าย", "ประกอบ", "ส่วน"],
+        ["รูปแบบ", "ซ้ำ", "คล้าย", "เคยเจอ", "ลักษณะ", "เปรียบเทียบ"],
+        ["สำคัญ", "ตัดออก", "จำเป็น", "แก่น", "แบบจำลอง", "รายละเอียด"],
+        ["ขั้นตอน", "ลำดับ", "ชัดเจน", "ทีละขั้น", "แม่นยำ", "ระบบ"],
+        ["ประยุกต์", "แก้ปัญหา", "ชีวิต", "ระบบ", "ตรรกะ", "ขั้นตอน"]
+    ];
 
-    // --- ระบบบล็อกการคัดลอกและวาง (Anti-Paste) ---
-    document.querySelectorAll('textarea').forEach(textarea => {
-        textarea.addEventListener('contextmenu', e => e.preventDefault()); 
-        textarea.addEventListener('drop', e => e.preventDefault());        
-        textarea.addEventListener('paste', e => {                         
+    // ป้องกันการ Paste
+    document.querySelectorAll('textarea').forEach(el => {
+        el.addEventListener('paste', e => {
             e.preventDefault();
-            alert("❌ ไม่อนุญาตให้คัดลอกข้อความมาวาง! คุณต้องพิมพ์ตอบทีละตัวอักษรเท่านั้น");
+            alert("❌ ห้ามวางข้อความ! กรุณาพิมพ์ด้วยตัวเองเท่านั้น");
         });
     });
 
-    // --- ฟังก์ชันตรวจประมวลผลคะแนน % เรียลไทม์ขณะพิมพ์ ---
-    function checkLiveProgress(qNum) {
-        const text = document.getElementById(`ans-${qNum}`).value.trim();
-        const currentKeywords = keywords[qNum];
-        
-        if (text.length === 0) {
-            updateUI(qNum, 0, 0);
-            return;
-        }
+    // ฟังก์ชันตรวจสอบเรียลไทม์ (แก้ไขเรื่องคำสงวนระบบแล้ว)
+    function checkLiveProgress(idx) {
+        const text = document.getElementById(`ans-${idx}`).value.trim();
+        if(!text) { updateUI(idx, 0, 0); return; }
 
-        let matchCount = 0;
-        currentKeywords.forEach(kw => {
-            if (text.toLowerCase().includes(kw)) matchCount++;
-        });
+        let matches = 0;
+        keywords[idx-1].forEach(kw => { if(text.includes(kw)) matches++; });
 
-        let keywordScore = (matchCount / currentKeywords.length) * 70;
-        let lengthScore = Math.min((text.length / 80) * 30, 30); 
-        
-        let totalPercent = Math.round(keywordScore + lengthScore);
-        if (totalPercent > 100) totalPercent = 100;
+        let kwPerc = (matches / keywords[idx-1].length) * 70; // คีย์เวิร์ดให้ 70%
+        let lenPerc = Math.min((text.length / 60) * 30, 30);  // ความยาวให้ 30%
+        let totalPerc = Math.round(kwPerc + lenPerc);
+        if(totalPerc > 100) totalPerc = 100;
 
-        let score = ((totalPercent / 100) * 3).toFixed(1);
-        updateUI(qNum, totalPercent, score);
+        let score = ((totalPerc / 100) * 3).toFixed(1);
+        updateUI(idx, totalPerc, score);
     }
 
-    function updateUI(qNum, percent, score) {
-        document.getElementById(`percent-${qNum}`).innerText = percent;
-        document.getElementById(`score-${qNum}`).innerText = score;
-        document.getElementById(`bar-${qNum}`).style.width = percent + "%";
+    function updateUI(idx, p, s) {
+        document.getElementById(`perc-${idx}`).innerText = p;
+        document.getElementById(`score-${idx}`).innerText = s;
+        document.getElementById(`bar-${idx}`).style.width = p + "%";
         
-        const bar = document.getElementById(`bar-${qNum}`);
-        if (percent < 40) bar.style.backgroundColor = "#ef4444";      
-        else if (percent < 75) bar.style.backgroundColor = "#f59e0b"; 
-        else bar.style.backgroundColor = "#10b981";                  
+        const bar = document.getElementById(`bar-${idx}`);
+        if(p < 40) bar.style.background = "#f87171";
+        else if(p < 75) bar.style.background = "#fbbf24";
+        else bar.style.background = "#10b981";
     }
 
-    // --- ฟังก์ชันส่งข้อสอบและส่งค่าไปยัง Google Sheets ---
-    function submitQuiz() {
-        const studentId = document.getElementById("student-id").value.trim();
-        const title = document.getElementById("name-title").value;
-        const nameInput = document.getElementById("student-name").value.trim();
-        const studentNo = document.getElementById("student-no").value.trim();
-        const studentClass = document.getElementById("student-class").value.trim();
-
-        // ตรวจสอบความครบถ้วนของข้อมูลส่วนตัวก่อนส่ง
-        if (!studentId || !nameInput || !studentNo || !studentClass) {
-            alert("❌ กรุณากรอกข้อมูลส่วนตัวของคุณให้ครบถ้วนทุกช่องก่อนส่งข้อสอบ!");
-            return;
-        }
-
-        document.getElementById("btn-submit").disabled = true;
-        document.getElementById("btn-submit").innerText = "กำลังจัดส่งข้อสอบ...";
-
-        let total = 0;
-        let quizData = { 
-            studentId: studentId,
-            studentName: title + nameInput, 
-            studentNo: studentNo,
-            studentClass: studentClass,
-            totalScore: 0 
+    async function submit() {
+        const payload = {
+            studentId: document.getElementById('studentId').value,
+            prefix: document.getElementById('prefix').value,
+            fullName: document.getElementById('fullName').value,
+            studentNo: document.getElementById('studentNo').value,
+            studentClass: document.getElementById('studentClass').value,
+            totalScore: 0
         };
 
-        for (let i = 1; i <= 5; i++) {
-            let scoreVal = parseFloat(document.getElementById(`score-${i}`).innerText);
-            total += scoreVal;
-            
-            quizData[`ans${i}`] = document.getElementById(`ans-${i}`).value;
-            quizData[`percent${i}`] = document.getElementById(`percent-${i}`).innerText;
-            quizData[`score${i}`] = scoreVal;
+        if(!payload.studentId || !payload.fullName || !payload.studentNo || !payload.studentClass) {
+            alert("⚠️ กรุณากรอกข้อมูลส่วนตัวให้ครบทุกช่อง"); return;
         }
-        quizData.totalScore = total.toFixed(1);
 
-        document.getElementById("total-score").innerText = quizData.totalScore;
-        document.getElementById("result-section").style.display = "block";
-        document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').innerText = "กำลังส่ง...";
 
-        // ลิงก์ Google Apps Script เวอร์ชันใหม่ของคุณ
-        const googleAppScriptURL = "https://script.google.com/macros/s/AKfycbwRhicdrnjg-vYA88elNyk-kPQTOwxlgUSQveE-c1wZPgKvs3s3BdLcsUN7a2JWeV2rPQ/exec"; 
+        let finalTotal = 0;
+        for(let i=1; i<=5; i++) {
+            payload[`ans${i}`] = document.getElementById(`ans-${i}`).value;
+            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText;
+            payload[`score${i}`] = document.getElementById(`score-${i}`).innerText;
+            finalTotal += parseFloat(payload[`score${i}`]);
+        }
+        payload.totalScore = finalTotal.toFixed(1);
 
-        fetch(googleAppScriptURL, {
-            method: "POST",
-            mode: "no-cors",
-            cache: "no-cache",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(quizData)
-        })
-        .then(() => {
-            document.getElementById("status-sheet").innerText = "✅ บันทึกคำตอบและคะแนนลงใน Google Sheets เรียบร้อยแล้ว!";
-            document.getElementById("status-sheet").style.color = "#10b981";
-            document.getElementById("btn-submit").innerText = "ส่งข้อสอบสำเร็จแล้ว";
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            document.getElementById("status-sheet").innerText = "❌ เกิดข้อผิดพลาดในการเชื่อมต่อสเปรดชีต";
-            document.getElementById("status-sheet").style.color = "#ef4444";
-            document.getElementById("btn-submit").disabled = false;
-            document.getElementById("btn-submit").innerText = "ส่งคำตอบและบันทึกข้อมูลอีกครั้ง";
-        });
+        document.getElementById('totalScore').innerText = payload.totalScore;
+        document.getElementById('result').style.display = "block";
+        document.getElementById('result').scrollIntoView({behavior: 'smooth'});
+
+        // แทนที่ด้วย URL ใหม่ล่าสุดของคุณเรียบร้อยแล้ว
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiEUA6PO5-eoBsH_DoUizm0nnguo2SWVsFNcdxjYWDPtAqFzgvKxPFdDKu-LHP9tOt3g/exec";
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+            document.getElementById('saveMsg').innerText = "📊 บันทึกข้อมูลลง Google Sheets สำเร็จ!";
+        } catch (e) {
+            document.getElementById('saveMsg').innerText = "❌ เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+        }
     }
 </script>
 
