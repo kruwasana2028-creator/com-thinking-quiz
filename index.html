@@ -261,13 +261,8 @@
         document.getElementById("result-section").style.display = "block";
         document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
 
-        // ใส่ URL ที่ก๊อปปี้มาจาก Google Apps Script ในขั้นตอนนี้
-        const googleAppScriptURL = "วาง_URL_APPS_SCRIPT_ตรงนี้"; 
-
-        if (googleAppScriptURL === "วาง_URL_APPS_SCRIPT_ตรงนี้") {
-            document.getElementById("status-sheet").innerText = "⚠️ ยังไม่ได้เชื่อมต่อ URL ของ Google Sheets (แต่ระบบตรวจคะแนนให้แล้ว)";
-            return;
-        }
+        // ลิงก์ Google Apps Script ของคุณที่ถูกผูกเข้ากับระบบเรียบร้อยแล้ว
+        const googleAppScriptURL = "https://script.google.com/a/macros/sbw.ac.th/s/AKfycbyl2bNISRXjdRwRJmQ3tn6HE-vyxEKjakJKES-XgDTU0RM9yEARpHGemE5CSbl2xFUWVw/exec"; 
 
         fetch(googleAppScriptURL, {
             method: "POST",
