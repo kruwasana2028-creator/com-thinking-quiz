@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบทดสอบอัตนัย ม.4: แนวคิดเชิงคำนวณ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            user-select: none; /* ป้องกันการก๊อปปี้โจทย์ */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .notice {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+        }
+        .question-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            resize: vertical;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+        .live-status {
+            margin-top: 8px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 5px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #10b981;
+            transition: width 0.3s;
+        }
+        .score-display {
+            font-weight: bold;
+            color: #0f172a;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #2563eb;
+        }
+        #result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecfdf5;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 แบบทดสอบอัตนัย: แนวคิดเชิงคำนวณ (ม.4)</h1>
+    <div class="notice">⚠️ ห้ามคัดลอกข้อความมาวางเด็ดขาด (ต้องพิมพ์ตอบด้วยตัวเองเท่านั้น) • ข้อละ 3 คะแนน</div>
+    
+    <div id="quiz-form">
+        <div class="question-block">
+            <div class="question-text">ข้อ 1: อธิบายความหมายและประโยชน์ของ "แนวคิดการแยกย่อย" (Decomposition) ในการแก้ปัญหามาให้เข้าใจ</div>
+            <textarea id="ans-1" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(1)"></textarea>
+            <div class="live-status">
+                <span>ความถูกต้อง: <span id="percent-1">0</span>%</span>
+                <span class="score-display">คะแนนปัจจุบัน: <span id="score-1">0.0</span> / 3</span>
+            </div>
+            <div class="progress-bar-container"><div id="bar-1" class="progress-bar"></div></div>
+        </div>
+
+        <div class="question-block">
+            <div class="question-text">ข้อ 2: "แนวคิดการจดจำรูปแบบ" (Pattern Recognition) ช่วยให้เราสามารถแก้ปัญหาได้เร็วขึ้นได้อย่างไร จงยกตัวอย่างสถานการณ์ในชีวิตประจำวัน</div>
+            <textarea id="ans-2" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(2)"></textarea>
+            <div class="live-status">
+                <span>ความถูกต้อง: <span id="percent-2">0</span>%</span>
+                <span class="score-display">คะแนนปัจจุบัน: <span id="score-2">0.0</span> / 3</span>
+            </div>
+            <div class="progress-bar-container"><div id="bar-2" class="progress-bar"></div></div>
+        </div>
+
+        <div class="question-block">
+            <div class="question-text">ข้อ 3: การคิดแบบ "แนวคิดเชิงนามธรรม" (Abstraction) คืออะไร และทำไมการสร้างแผนที่รถไฟฟ้าจึงต้องตัดรายละเอียดบางอย่างออก</div>
+            <textarea id="ans-3" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(3)"></textarea>
+            <div class="live-status">
+                <span>ความถูกต้อง: <span id="percent-3">0</span>%</span>
+                <span class="score-display">คะแนนปัจจุบัน: <span id="score-3">0.0</span> / 3</span>
+            </div>
+            <div class="progress-bar-container"><div id="bar-3" class="progress-bar"></div></div>
+        </div>
+
+        <div class="question-block">
+            <div class="question-text">ข้อ 4: "แนวคิดการออกแบบอัลกอริทึม" (Algorithm Design) มีความสำคัญอย่างไร และการเขียนขั้นตอนวิธีที่ดีควรมีลักษณะอย่างไร</div>
+            <textarea id="ans-4" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(4)"></textarea>
+            <div class="live-status">
+                <span>ความถูกต้อง: <span id="percent-4">0</span>%</span>
+                <span class="score-display">คะแนนปัจจุบัน: <span id="score-4">0.0</span> / 3</span>
+            </div>
+            <div class="progress-bar-container"><div id="bar-4" class="progress-bar"></div></div>
+        </div>
+
+        <div class="question-block">
+            <div class="question-text">ข้อ 5: จงอธิบายว่า เหตุใด "แนวคิดเชิงคำนวณ" จึงไม่ได้จำกัดอยู่แค่การพัฒนาซอฟต์แวร์คอมพิวเตอร์ แต่มนุษย์สามารถนำไปใช้แก้ปัญหาทั่วไปได้</div>
+            <textarea id="ans-5" placeholder="พิมพ์คำตอบของคุณที่นี่..." oninput="checkLiveProgress(5)"></textarea>
+            <div class="live-status">
+                <span>ความถูกต้อง: <span id="percent-5">0</span>%</span>
+                <span class="score-display">คะแนนปัจจุบัน: <span id="score-5">0.0</span> / 3</span>
+            </div>
+            <div class="progress-bar-container"><div id="bar-5" class="progress-bar"></div></div>
+        </div>
+
+        <button class="btn-submit" id="btn-submit" onclick="submitQuiz()">ส่งคำตอบและบันทึกข้อมูล</button>
+    </div>
+
+    <div id="result-section">
+        <h2>🎉 สรุปผลการทดสอบ</h2>
+        <p style="font-size: 1.6em; font-weight: bold; color: #10b981;">คะแนนรวมของคุณคือ: <span id="total-score">0</span> / 15 คะแนน</p>
+        <p id="status-sheet" style="color: #64748b; font-size: 0.9em;">กำลังบันทึกข้อมูลลง Google Sheets...</p>
+    </div>
+</div>
+
+<script>
+    // คำสำคัญที่ระบบ AI จำลองใช้ตรวจวัดเปอร์เซ็นต์ความถูกต้องร่วมกับความยาวคำตอบ
+    const keywords = {
+        1: ["ย่อย", "แยก", "เล็กลง", "ส่วนประกอบ", "ง่าย", "decomposition"],
+        2: ["ซ้ำ", "คล้าย", "เหมือน", "รูปแบบ", "เคยเจอ", "pattern"],
+        3: ["สำคัญ", "ตัดออก", "ไม่จำเป็น", "แก่น", "นามธรรม", "abstraction"],
+        4: ["ขั้นตอน", "ลำดับ", "เป็นระบบ", "ชัดเจน", "ทีละขั้น", "algorithm"],
+        5: ["ชีวิตประจำวัน", "มนุษย์", "แก้ปัญหา", "คิดอย่างเป็นระบบ", "คอมพิวเตอร์"]
+    };
+
+    // --- ระบบบล็อกการคัดลอกและวาง (Anti-Paste) ---
+    document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.addEventListener('contextmenu', e => e.preventDefault()); // บล็อกคลิกขวา
+        textarea.addEventListener('drop', e => e.preventDefault());        // บล็อกการลากข้อความมาวาง
+        textarea.addEventListener('paste', e => {                         // บล็อก Ctrl+V / Cmd+V
+            e.preventDefault();
+            alert("❌ ไม่อนุญาตให้คัดลอกข้อความมาวาง! คุณต้องพิมพ์ตอบทีละตัวอักษรเท่านั้น");
+        });
+    });
+
+    // --- ฟังก์ชันตรวจประมวลผลคะแนน % เรียลไทม์ขณะพิมพ์ ---
+    function checkLiveProgress(qNum) {
+        const text = document.getElementById(`ans-${qNum}`).value.trim();
+        const currentKeywords = keywords[qNum];
+        
+        if (text.length === 0) {
+            updateUI(qNum, 0, 0);
+            return;
+        }
+
+        let matchCount = 0;
+        currentKeywords.forEach(kw => {
+            if (text.toLowerCase().includes(kw)) matchCount++;
+        });
+
+        // คิดคำนวณสัดส่วน % (คีย์เวิร์ดเด่น 70% + ความยาวเนื้อหาที่อธิบาย 30%)
+        let keywordScore = (matchCount / currentKeywords.length) * 70;
+        let lengthScore = Math.min((text.length / 80) * 30, 30); // เต็มที่ที่ความยาว 80 ตัวอักษร
+        
+        let totalPercent = Math.round(keywordScore + lengthScore);
+        if (totalPercent > 100) totalPercent = 100;
+
+        // คำนวณเป็นคะแนนจากข้อละ 3 คะแนน
+        let score = ((totalPercent / 100) * 3).toFixed(1);
+
+        updateUI(qNum, totalPercent, score);
+    }
+
+    function updateUI(qNum, percent, score) {
+        document.getElementById(`percent-${qNum}`).innerText = percent;
+        document.getElementById(`score-${qNum}`).innerText = score;
+        document.getElementById(`bar-${qNum}`).style.width = percent + "%";
+        
+        const bar = document.getElementById(`bar-${qNum}`);
+        if (percent < 40) bar.style.backgroundColor = "#ef4444";      // แดง
+        else if (percent < 75) bar.style.backgroundColor = "#f59e0b"; // เหลือง
+        else bar.style.backgroundColor = "#10b981";                  // เขียว
+    }
+
+    // --- ฟังก์ชันส่งข้อสอบและส่งค่าไปยัง Google Sheets ---
+    function submitQuiz() {
+        document.getElementById("btn-submit").disabled = true;
+        document.getElementById("btn-submit").innerText = "กำลังจัดส่งข้อสอบ...";
+
+        let total = 0;
+        let quizData = { totalScore: 0 };
+
+        for (let i = 1; i <= 5; i++) {
+            let scoreVal = parseFloat(document.getElementById(`score-${i}`).innerText);
+            total += scoreVal;
+            
+            quizData[`ans${i}`] = document.getElementById(`ans-${i}`).value;
+            quizData[`percent${i}`] = document.getElementById(`percent-${i}`).innerText;
+            quizData[`score${i}`] = scoreVal;
+        }
+        quizData.totalScore = total.toFixed(1);
+
+        document.getElementById("total-score").innerText = quizData.totalScore;
+        document.getElementById("result-section").style.display = "block";
+        document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
+
+        // ใส่ URL ที่ก๊อปปี้มาจาก Google Apps Script ในขั้นตอนนี้
+        const googleAppScriptURL = https://script.google.com/a/macros/sbw.ac.th/s/AKfycbwRIlVw8M4SwJ_F_hFoXYiUo9wkm4g08XIs9xAJZF-k/dev; 
+
+        if (googleAppScriptURL === https://script.google.com/a/macros/sbw.ac.th/s/AKfycbwRIlVw8M4SwJ_F_hFoXYiUo9wkm4g08XIs9xAJZF-k/dev) {
+            document.getElementById("status-sheet").innerText = "⚠️ ยังไม่ได้เชื่อมต่อ URL ของ Google Sheets (แต่ระบบตรวจคะแนนให้แล้ว)";
+            return;
+        }
+
+        fetch(googleAppScriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            cache: "no-cache",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(quizData)
+        })
+        .then(() => {
+            document.getElementById("status-sheet").innerText = "✅ บันทึกคำตอบและคะแนนลงใน Google Sheets เรียบร้อยแล้ว!";
+            document.getElementById("status-sheet").style.color = "#10b981";
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("status-sheet").innerText = "❌ เกิดข้อผิดพลาดในการเชื่อมต่อสเปรดชีต";
+            document.getElementById("status-sheet").style.color = "#ef4444";
+        });
+    }
+</script>
+
+</body>
+</html>
