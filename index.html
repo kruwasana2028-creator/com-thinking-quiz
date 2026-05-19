@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ</title>
+    <title>แบบทดสอบอัตนัย ม.4: แนวคิดเชิงคำนวณ</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -116,7 +116,7 @@
 <body>
 
 <div class="container">
-    <h1>📝 กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ</h1>
+    <h1>📝 แบบทดสอบอัตนัย: แนวคิดเชิงคำนวณ (ม.4)</h1>
     <div class="notice">⚠️ ห้ามคัดลอกข้อความมาวางเด็ดขาด (ต้องพิมพ์ตอบด้วยตัวเองเท่านั้น) • ข้อละ 3 คะแนน</div>
     
     <div id="quiz-form">
@@ -261,8 +261,8 @@
         document.getElementById("result-section").style.display = "block";
         document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
 
-        // ลิงก์ Google Apps Script ของคุณที่ถูกผูกเข้ากับระบบเรียบร้อยแล้ว
-        const googleAppScriptURL = "https://script.google.com/a/macros/sbw.ac.th/s/AKfycbyl2bNISRXjdRwRJmQ3tn6HE-vyxEKjakJKES-XgDTU0RM9yEARpHGemE5CSbl2xFUWVw/exec"; 
+        // ลิงก์ Google Apps Script ตัวใหม่ของคุณที่ปรับเข้ากับระบบแล้ว
+        const googleAppScriptURL = "https://script.google.com/macros/s/AKfycbw3R3uHLsROSNpXZRi2YGmnvUZNtfPlUq4DZsrL3vPiYGKjqJvhIYYGi-BTmg52wlVFpg/exec"; 
 
         fetch(googleAppScriptURL, {
             method: "POST",
@@ -274,11 +274,14 @@
         .then(() => {
             document.getElementById("status-sheet").innerText = "✅ บันทึกคำตอบและคะแนนลงใน Google Sheets เรียบร้อยแล้ว!";
             document.getElementById("status-sheet").style.color = "#10b981";
+            document.getElementById("btn-submit").innerText = "ส่งข้อสอบสำเร็จแล้ว";
         })
         .catch(error => {
             console.error("Error:", error);
             document.getElementById("status-sheet").innerText = "❌ เกิดข้อผิดพลาดในการเชื่อมต่อสเปรดชีต";
             document.getElementById("status-sheet").style.color = "#ef4444";
+            document.getElementById("btn-submit").disabled = false;
+            document.getElementById("btn-submit").innerText = "ส่งคำตอบและบันทึกข้อมูลอีกครั้ง";
         });
     }
 </script>
