@@ -18,7 +18,11 @@
             --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -91,8 +95,18 @@
             }
         }
 
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-weight: 600; font-size: 0.9em; color: #334155; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #334155;
+        }
+
         .form-group input, .form-group select {
             padding: 10px 14px;
             border: 1px solid var(--border);
@@ -115,39 +129,117 @@
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 25px;
+            transition: border-color 0.2s ease;
         }
 
-        .q-text { font-weight: 700; font-size: 1.05em; margin-bottom: 12px; display: block; }
+        .question-card:focus-within {
+            border-color: var(--primary);
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: block;
+        }
+
         textarea {
-            width: 100%; height: 110px; padding: 14px; border-radius: 8px;
-            border: 1px solid var(--border); resize: vertical; font-size: 0.98em;
-            box-sizing: border-box; font-family: inherit; outline: none;
+            width: 100%;
+            height: 110px;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            resize: vertical;
+            font-size: 0.98em;
+            box-sizing: border-box;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
         }
 
         /* แสดงผลคะแนนความคืบหน้าแบบเรียลไทม์ */
         .status-row {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 12px; font-size: 0.88em; color: var(--text-muted); font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-size: 0.88em;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .score-badge { font-weight: 700; color: var(--text-main); background: #e2e8f0; padding: 2px 8px; border-radius: 6px; }
-        .progress-container { width: 100%; background: #e2e8f0; height: 6px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
-        .progress-bar { height: 100%; width: 0%; background: var(--primary); transition: width 0.4s ease; }
+        .score-badge {
+            font-weight: 700;
+            color: var(--text-main);
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 10px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width 0.4s ease, background-color 0.3s ease;
+        }
 
         /* ปุ่มส่งข้อสอบ */
         .btn-submit {
-            width: 100%; padding: 16px; background: var(--primary); color: white;
-            border: none; border-radius: 10px; font-size: 1.15em; font-weight: 700;
-            cursor: pointer; transition: all 0.2s ease; margin-top: 15px;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.15em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
         }
 
-        .btn-submit:hover { background: var(--primary-hover); }
-        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
 
-        /* กล่องสรุปคะแนนหลังส่งข้อมูล */
+        .btn-submit:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* กล่องแสดงสรุปคะแนนหลังจากส่งเรียบร้อย */
         #result {
-            display: none; text-align: center; margin-top: 30px; padding: 30px;
-            border-radius: 12px; background: #f0fdf4; border: 2px solid var(--success);
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            background: #f0fdf4;
+            border: 2px solid var(--success);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -155,7 +247,7 @@
 
 <div class="container">
     <h1>📝 แบบทดสอบแนวคิดเชิงคำนวณ (ม.4)</h1>
-    <p class="notice">⚠️ ระบบตรวจข้อความเรียลไทม์ • ไม่อนุญาตให้คัดลอกคำตอบมาวาง (ข้อละ 3 คะแนน)</p>
+    <p class="notice">⚠️ ระบบจะตรวจข้อความเรียลไทม์ • ไม่อนุญาตให้คัดลอกคำตอบมาวาง (ข้อละ 3 คะแนน)</p>
 
     <div class="student-info-section">
         <div class="info-grid">
@@ -197,6 +289,7 @@
                 "แนวคิดเชิงคำนวณสามารถนำไปใช้แก้ปัญหาที่ไม่เกี่ยวกับคอมพิวเตอร์ได้อย่างไร จงยกตัวอย่าง"
             ];
 
+            // วนลูปสร้างการ์ดข้อสอบ 5 ข้ออัตโนมัติ
             questions.forEach((q, i) => {
                 document.write(`
                     <div class="question-card">
@@ -218,11 +311,12 @@
     <div id="result">
         <h2 style="color: #166534; margin-bottom: 10px;">🎉 ส่งคำตอบเสร็จสิ้น!</h2>
         <p style="font-size: 1.4em; font-weight: bold; margin-bottom: 5px;">คะแนนประเมินรวม: <span id="totalScore" style="color: var(--success);">0</span> / 15 คะแนน</p>
-        <p id="saveMsg" style="color: var(--text-muted); font-size: 0.95em;">กำลังบันทึกข้อมูล...</p>
+        <p id="saveMsg" style="color: var(--text-muted); font-size: 0.95em;">กำลังอัปโหลดข้อมูลเข้าสู่ระบบ...</p>
     </div>
 </div>
 
 <script>
+    // ชุดคีย์เวิร์ดใช้ตรวจสอบคะแนนความเรียลไทม์
     const keywords = [
         ["ย่อย", "เล็ก", "แบ่ง", "ง่าย", "ประกอบ", "ส่วน"],
         ["รูปแบบ", "ซ้ำ", "คล้าย", "เคยเจอ", "ลักษณะ", "เปรียบเทียบ"],
@@ -231,15 +325,15 @@
         ["ประยุกต์", "แก้ปัญหา", "ชีวิต", "ระบบ", "ตรรกะ", "ขั้นตอน"]
     ];
 
-    // เปิดระบบป้องกันการก๊อปปี้คำตอบมาวาง (Anti-Paste)
+    // เปิดระบบป้องกันการก็อปปี้คำตอบมาวาง (Anti-Paste)
     document.querySelectorAll('textarea').forEach(el => {
         el.addEventListener('paste', e => {
             e.preventDefault();
-            alert("❌ ระบบล็อกการวางข้อความ! คุณต้องพิมพ์ตอบด้วยตัวเองเท่านั้น");
+            alert("❌ ระบบล็อกการวางข้อความ! ข้อสอบอัตนัยนี้ต้องการให้ผู้เรียนพิมพ์ด้วยตัวเองเท่านั้น");
         });
     });
 
-    // ฟังก์ชันตรวจสอบคะแนนแบบเรียลไทม์
+    // ฟังก์ชันตรวจสอบเรียลไทม์ขณะผู้เรียนพิมพ์คำตอบ
     function checkLiveProgress(idx) {
         const text = document.getElementById(`ans-${idx}`).value.trim();
         if(!text) { updateUI(idx, 0, 0); return; }
@@ -247,8 +341,8 @@
         let matches = 0;
         keywords[idx-1].forEach(kw => { if(text.includes(kw)) matches++; });
 
-        let kwPerc = (matches / keywords[idx-1].length) * 70;
-        let lenPerc = Math.min((text.length / 60) * 30, 30);
+        let kwPerc = (matches / keywords[idx-1].length) * 70; // สัดส่วนคีย์เวิร์ด 70%
+        let lenPerc = Math.min((text.length / 60) * 30, 30);  // สัดส่วนความยาวการอธิบาย 30%
         let totalPerc = Math.round(kwPerc + lenPerc);
         if(totalPerc > 100) totalPerc = 100;
 
@@ -256,6 +350,7 @@
         updateUI(idx, totalPerc, score);
     }
 
+    // ปรับปรุงแถบสีความคืบหน้าคะแนน
     function updateUI(idx, p, s) {
         document.getElementById(`perc-${idx}`).innerText = p;
         document.getElementById(`score-${idx}`).innerText = s;
@@ -267,23 +362,26 @@
         else bar.style.background = "var(--success)";
     }
 
-    // ฟังก์ชันรวบรวมข้อมูลทั้งหมดส่งไปฐานข้อมูล
+    // ฟังก์ชันรวบรวมข้อมูลส่งเข้า Google Sheets
     async function submitQuiz() {
+        // ดึงข้อมูลส่วนตัวนักเรียน
         const studentId = document.getElementById('studentId').value.trim();
         const prefix = document.getElementById('prefix').value;
         const fullName = document.getElementById('fullName').value.trim();
         const studentNo = document.getElementById('studentNo').value.trim();
         const studentClass = document.getElementById('studentClass').value.trim();
 
+        // ตรวจสอบความถูกต้องของข้อมูลส่วนตัว
         if(!studentId || !fullName || !studentNo || !studentClass) {
-            alert("⚠️ กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วนก่อนส่งข้อสอบครับ"); 
+            alert("⚠️ ขออภัย: กรุณากรอกข้อมูลส่วนตัวของนักเรียนให้ครบทุกช่องก่อนส่งข้อสอบครับ"); 
             return;
         }
 
+        // ล็อกปุ่มกดป้องกันการกดส่งซ้ำซ้อน
         document.getElementById('submitBtn').disabled = true;
-        document.getElementById('submitBtn').innerText = "กำลังนำส่งข้อมูล...";
+        document.getElementById('submitBtn').innerText = "กำลังนำส่งข้อมูลเข้าสู่สเปรดชีต...";
 
-        // โครงสร้าง Payload ที่จะทำการ Map ข้อมูลแบบเดี่ยวตรงตัว
+        // รวบรวม Payload โครงสร้างตรงกับ Google Sheets
         const payload = {
             studentId: studentId,
             prefix: prefix,
@@ -293,38 +391,39 @@
             totalScore: 0
         };
 
-        // วนลูปดึงข้อมูลคำตอบ คะแนน และ เปอร์เซ็นต์แยกข้อ 1-5 อย่างละเอียด
         let finalTotal = 0;
         for(let i = 1; i <= 5; i++) {
             payload[`ans${i}`] = document.getElementById(`ans-${i}`).value.trim();
-            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText + "%";
+            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText;
             payload[`score${i}`] = document.getElementById(`score-${i}`).innerText;
             finalTotal += parseFloat(payload[`score${i}`]);
         }
         payload.totalScore = finalTotal.toFixed(1);
 
+        // แสดงผลสรุปคะแนนทันทีบนหน้าจอ
         document.getElementById('totalScore').innerText = payload.totalScore;
         document.getElementById('result').style.display = "block";
         document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 
-        // ลิงก์ใหม่ล่าสุดที่คุณส่งมา
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfQGESdhXLpE5kTnoFid2wIVlLyMJNzlyLCBX085bBBAoMTcmndrRAJnLJV7XblIIf/exec";
+        // ลิงก์ URL Web App จาก Google Apps Script ล่าสุดของคุณ
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzid3btPbuHC9KcmNQWC6TS9RS9wKYHPX34YhzGtp666Q8el9I1ozmJN9wnlRy1Hbt0jQ/exec";
 
         try {
+            // ส่งข้อมูลไปยัง Google Apps Script รองรับการเชื่อมต่อเครือข่ายภายนอก
             await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors', 
+                mode: 'no-cors', // บังคับโหมดเพื่อส่งค่าจาก Domain ภายนอกได้ราบรื่น
                 cache: 'no-cache',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
             
-            document.getElementById('saveMsg').innerText = "📊 บันทึกคำตอบและคะแนนลงใน Google Sheets สำเร็จเรียบร้อย!";
+            document.getElementById('saveMsg').innerText = "📊 บันทึกคะแนนคำตอบลงใน Google Sheets เรียบร้อยแล้ว!";
             document.getElementById('saveMsg').style.color = "var(--success)";
-            document.getElementById('submitBtn').innerText = "ส่งข้อสอบสำเร็จแล้ว";
+            document.getElementById('submitBtn').innerText = "ส่งข้อสอบสำเร็จเรียบร้อย";
         } catch (error) {
-            console.error("Error: ", error);
-            document.getElementById('saveMsg').innerText = "❌ เกิดข้อผิดพลาด ไม่สามารถส่งข้อมูลได้";
+            console.error("Submission Error: ", error);
+            document.getElementById('saveMsg').innerText = "❌ เกิดข้อผิดพลาดทางเทคนิคในการติดต่อฐานข้อมูล โปรดแจ้งครูผู้สอน";
             document.getElementById('saveMsg').style.color = "var(--danger)";
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('submitBtn').innerText = "ลองส่งข้อมูลอีกครั้ง";
