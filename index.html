@@ -26,7 +26,7 @@
             color: var(--text-main);
             padding: 30px 15px;
             line-height: 1.6;
-            user-select: none;
+            user-select: none; /* ป้องกันการคัดลอกโจทย์ */
         }
 
         .container {
@@ -61,6 +61,7 @@
             border: 1px dashed var(--danger);
         }
 
+        /* ส่วนกรอกข้อมูลนักเรียน (Responsive Grid Layout) */
         .student-info-section {
             background: #f1f5f9;
             padding: 25px;
@@ -107,6 +108,7 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
+        /* ส่วนการ์ดข้อสอบ */
         .question-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -122,6 +124,7 @@
             box-sizing: border-box; font-family: inherit; outline: none;
         }
 
+        /* แสดงผลคะแนนความคืบหน้าแบบเรียลไทม์ */
         .status-row {
             display: flex; justify-content: space-between; align-items: center;
             margin-top: 12px; font-size: 0.88em; color: var(--text-muted); font-weight: 500;
@@ -131,6 +134,7 @@
         .progress-container { width: 100%; background: #e2e8f0; height: 6px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
         .progress-bar { height: 100%; width: 0%; background: var(--primary); transition: width 0.4s ease; }
 
+        /* ปุ่มส่งข้อสอบ */
         .btn-submit {
             width: 100%; padding: 16px; background: var(--primary); color: white;
             border: none; border-radius: 10px; font-size: 1.15em; font-weight: 700;
@@ -140,6 +144,7 @@
         .btn-submit:hover { background: var(--primary-hover); }
         .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
 
+        /* กล่องสรุปคะแนนหลังส่งข้อมูล */
         #result {
             display: none; text-align: center; margin-top: 30px; padding: 30px;
             border-radius: 12px; background: #f0fdf4; border: 2px solid var(--success);
@@ -226,6 +231,7 @@
         ["ประยุกต์", "แก้ปัญหา", "ชีวิต", "ระบบ", "ตรรกะ", "ขั้นตอน"]
     ];
 
+    // เปิดระบบป้องกันการก๊อปปี้คำตอบมาวาง (Anti-Paste)
     document.querySelectorAll('textarea').forEach(el => {
         el.addEventListener('paste', e => {
             e.preventDefault();
@@ -233,6 +239,7 @@
         });
     });
 
+    // ฟังก์ชันตรวจสอบคะแนนแบบเรียลไทม์
     function checkLiveProgress(idx) {
         const text = document.getElementById(`ans-${idx}`).value.trim();
         if(!text) { updateUI(idx, 0, 0); return; }
@@ -260,6 +267,7 @@
         else bar.style.background = "var(--success)";
     }
 
+    // ฟังก์ชันรวบรวมข้อมูลทั้งหมดส่งไปฐานข้อมูล
     async function submitQuiz() {
         const studentId = document.getElementById('studentId').value.trim();
         const prefix = document.getElementById('prefix').value;
@@ -275,6 +283,7 @@
         document.getElementById('submitBtn').disabled = true;
         document.getElementById('submitBtn').innerText = "กำลังนำส่งข้อมูล...";
 
+        // โครงสร้าง Payload ที่จะทำการ Map ข้อมูลแบบเดี่ยวตรงตัว
         const payload = {
             studentId: studentId,
             prefix: prefix,
@@ -284,10 +293,11 @@
             totalScore: 0
         };
 
+        // วนลูปดึงข้อมูลคำตอบ คะแนน และ เปอร์เซ็นต์แยกข้อ 1-5 อย่างละเอียด
         let finalTotal = 0;
         for(let i = 1; i <= 5; i++) {
             payload[`ans${i}`] = document.getElementById(`ans-${i}`).value.trim();
-            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText;
+            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText + "%";
             payload[`score${i}`] = document.getElementById(`score-${i}`).innerText;
             finalTotal += parseFloat(payload[`score${i}`]);
         }
@@ -297,7 +307,7 @@
         document.getElementById('result').style.display = "block";
         document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 
-        // ⚠️ นำลิงก์จากข้อ 2 ที่คุณก๊อปปี้ไว้ มาวางแทนที่เครื่องหมายคำพูดด้านล่างนี้ครับ
+        // ลิงก์ใหม่ล่าสุดที่คุณส่งมา
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfQGESdhXLpE5kTnoFid2wIVlLyMJNzlyLCBX085bBBAoMTcmndrRAJnLJV7XblIIf/exec";
 
         try {
