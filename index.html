@@ -173,14 +173,6 @@
             font-weight: 500;
         }
 
-        .score-badge {
-            font-weight: 700;
-            color: var(--text-main);
-            background: #e2e8f0;
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-
         .progress-container {
             width: 100%;
             background: #e2e8f0;
@@ -247,7 +239,7 @@
 
 <div class="container">
     <h1>📝 กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ (ม.4)</h1>
-    <p class="notice">⚠️ ระบบจะตรวจข้อความเรียลไทม์ • ไม่อนุญาตให้คัดลอกคำตอบมาวาง (ข้อละ 3 คะแนน)</p>
+    <p class="notice">⚠️ ระบบจะตรวจข้อความเรียลไทม์ • ไม่อนุญาตให้คัดลอกคำตอบมาวาง (คะแนนรวมเต็ม 5 คะแนน)</p>
 
     <div class="student-info-section">
         <div class="info-grid">
@@ -289,7 +281,7 @@
                 "แนวคิดเชิงคำนวณสามารถนำไปใช้แก้ปัญหาที่ไม่เกี่ยวกับคอมพิวเตอร์ได้อย่างไร จงยกตัวอย่าง"
             ];
 
-            // วนลูปสร้างการ์ดข้อสอบ 5 ข้ออัตโนมัติ
+            // วนลูปสร้างการ์ดข้อสอบ 5 ข้ออัตโนมัติ (แก้ไข: นำคะแนนดิบรายข้อออกจากหน้าจอเหลือเฉพาะเปอร์เซ็นต์)
             questions.forEach((q, i) => {
                 document.write(`
                     <div class="question-card">
@@ -297,7 +289,6 @@
                         <textarea id="ans-${i+1}" placeholder="พิมพ์คำตอบวิเคราะห์ของคุณที่นี่..." oninput="checkLiveProgress(${i+1})"></textarea>
                         <div class="status-row">
                             <span>ความสมบูรณ์เนื้อหา: <span id="perc-${i+1}">0</span>%</span>
-                            <span>คะแนน: <span id="score-${i+1}" class="score-badge">0.0</span> / 3.0</span>
                         </div>
                         <div class="progress-container"><div id="bar-${i+1}" class="progress-bar"></div></div>
                     </div>
@@ -310,7 +301,7 @@
 
     <div id="result">
         <h2 style="color: #166534; margin-bottom: 10px;">🎉 ส่งคำตอบเสร็จสิ้น!</h2>
-        <p style="font-size: 1.4em; font-weight: bold; margin-bottom: 5px;">คะแนนประเมินรวม: <span id="totalScore" style="color: var(--success);">0</span> / 15 คะแนน</p>
+        <p style="font-size: 1.4em; font-weight: bold; margin-bottom: 5px;">คะแนนประเมินรวม: <span id="totalScore" style="color: var(--success);">0</span> / 5 คะแนน</p>
         <p id="saveMsg" style="color: var(--text-muted); font-size: 0.95em;">กำลังอัปโหลดข้อมูลเข้าสู่ระบบ...</p>
     </div>
 </div>
@@ -336,7 +327,7 @@
     // ฟังก์ชันตรวจสอบเรียลไทม์ขณะผู้เรียนพิมพ์คำตอบ
     function checkLiveProgress(idx) {
         const text = document.getElementById(`ans-${idx}`).value.trim();
-        if(!text) { updateUI(idx, 0, 0); return; }
+        if(!text) { updateUI(idx, 0); return; }
 
         let matches = 0;
         keywords[idx-1].forEach(kw => { if(text.includes(kw)) matches++; });
@@ -346,14 +337,12 @@
         let totalPerc = Math.round(kwPerc + lenPerc);
         if(totalPerc > 100) totalPerc = 100;
 
-        let score = ((totalPerc / 100) * 3).toFixed(1);
-        updateUI(idx, totalPerc, score);
+        updateUI(idx, totalPerc);
     }
 
-    // ปรับปรุงแถบสีความคืบหน้าคะแนน
-    function updateUI(idx, p, s) {
+    // ปรับปรุงแถบสีความคืบหน้าคะแนน (อัปเดตเฉพาะเปอร์เซ็นต์และแถบสี)
+    function updateUI(idx, p) {
         document.getElementById(`perc-${idx}`).innerText = p;
-        document.getElementById(`score-${idx}`).innerText = s;
         document.getElementById(`bar-${idx}`).style.width = p + "%";
         
         const bar = document.getElementById(`bar-${idx}`);
@@ -393,14 +382,19 @@
 
         let finalTotal = 0;
         for(let i = 1; i <= 5; i++) {
+            let percent = parseFloat(document.getElementById(`perc-${i}`).innerText);
+            // คำนวณคะแนนแต่ละข้อ: คิดจากเปอร์เซ็นต์ โดยให้คะแนนเต็มสูงสุดข้อละ 1 คะแนน (รวม 5 ข้อ = 5 คะแนน)
+            let scoreForEachQuestion = percent / 100; 
+            
             payload[`ans${i}`] = document.getElementById(`ans-${i}`).value.trim();
-            payload[`percent${i}`] = document.getElementById(`perc-${i}`).innerText;
-            payload[`score${i}`] = document.getElementById(`score-${i}`).innerText;
-            finalTotal += parseFloat(payload[`score${i}`]);
+            payload[`percent${i}`] = percent.toString();
+            payload[`score${i}`] = scoreForEachQuestion.toFixed(2); // ส่งค่าคะแนนละเอียดแบบทศนิยมเข้า Sheets
+            finalTotal += scoreForEachQuestion;
         }
+        // แปลงคะแนนรวมให้อยู่ในรูปแบบทศนิยม 1 ตำแหน่ง (เต็ม 5 คะแนน)
         payload.totalScore = finalTotal.toFixed(1);
 
-        // แสดงผลสรุปคะแนนทันทีบนหน้าจอ
+        // แสดงผลสรุปคะแนนรวม 5 คะแนนทันทีบนหน้าจอ
         document.getElementById('totalScore').innerText = payload.totalScore;
         document.getElementById('result').style.display = "block";
         document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
@@ -409,10 +403,10 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzid3btPbuHC9KcmNQWC6TS9RS9wKYHPX34YhzGtp666Q8el9I1ozmJN9wnlRy1Hbt0jQ/exec";
 
         try {
-            // ส่งข้อมูลไปยัง Google Apps Script รองรับการเชื่อมต่อเครือข่ายภายนอก
+            // ส่งข้อมูลไปยัง Google Apps Script
             await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors', // บังคับโหมดเพื่อส่งค่าจาก Domain ภายนอกได้ราบรื่น
+                mode: 'no-cors',
                 cache: 'no-cache',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
