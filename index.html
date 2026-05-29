@@ -402,14 +402,12 @@
         // ลิงก์ URL Web App จาก Google Apps Script ล่าสุดของคุณ
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzid3btPbuHC9KcmNQWC6TS9RS9wKYHPX34YhzGtp666Q8el9I1ozmJN9wnlRy1Hbt0jQ/exec";
 
-        try {
-            // ส่งข้อมูลไปยัง Google Apps Script
+      try {
+            // ส่งข้อมูลไปยัง Google Apps Script (เปลี่ยนมาใช้ Content-Type ที่มักไม่ติด CORS กับ GAS)
             await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(payload)
             });
             
             document.getElementById('saveMsg').innerText = "📊 บันทึกคะแนนคำตอบเรียบร้อยแล้ว!";
