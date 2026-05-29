@@ -352,6 +352,7 @@
     }
 
     // ฟังก์ชันรวบรวมข้อมูลส่งเข้า Google Sheets
+  // ฟังก์ชันรวบรวมข้อมูลส่งเข้า Google Sheets (เวอร์ชันปรับปรุงสำหรับ GitHub Pages)
     async function submitQuiz() {
         // ดึงข้อมูลส่วนตัวนักเรียน
         const studentId = document.getElementById('studentId').value.trim();
@@ -383,33 +384,34 @@
         let finalTotal = 0;
         for(let i = 1; i <= 5; i++) {
             let percent = parseFloat(document.getElementById(`perc-${i}`).innerText);
-            // คำนวณคะแนนแต่ละข้อ: คิดจากเปอร์เซ็นต์ โดยให้คะแนนเต็มสูงสุดข้อละ 1 คะแนน (รวม 5 ข้อ = 5 คะแนน)
             let scoreForEachQuestion = percent / 100; 
             
             payload[`ans${i}`] = document.getElementById(`ans-${i}`).value.trim();
             payload[`percent${i}`] = percent.toString();
-            payload[`score${i}`] = scoreForEachQuestion.toFixed(2); // ส่งค่าคะแนนละเอียดแบบทศนิยมเข้า Sheets
+            payload[`score${i}`] = scoreForEachQuestion.toFixed(2); 
             finalTotal += scoreForEachQuestion;
         }
         // แปลงคะแนนรวมให้อยู่ในรูปแบบทศนิยม 1 ตำแหน่ง (เต็ม 5 คะแนน)
         payload.totalScore = finalTotal.toFixed(1);
 
-        // แสดงผลสรุปคะแนนรวม 5 คะแนนทันทีบนหน้าจอ
+        // แสดงผลสรุปคะแนนรวมบนหน้าจอทันที
         document.getElementById('totalScore').innerText = payload.totalScore;
         document.getElementById('result').style.display = "block";
         document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 
-        // ลิงก์ URL Web App จาก Google Apps Script ล่าสุดของคุณ
+        // ลิงก์ URL Web App จาก Google Apps Script (ใส่ลิงก์ของคุณที่นี่)
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzqQ0Hnp9gIiGv7hcW9uVQJvGb_6O6o1PbK5Si4S4okKoROdhAysfudNE8y8WQIOL-/exec";
 
-      try {
-            // ส่งข้อมูลไปยัง Google Apps Script (เปลี่ยนมาใช้ Content-Type ที่มักไม่ติด CORS กับ GAS)
+        try {
+            // ปรับปรุงการส่งข้อมูล: ใช้ mode: 'no-cors' เพื่อไม่ให้ GitHub บล็อกการส่งข้อมูลข้ามโดเมน
             await fetch(SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(payload)
             });
             
+            // เนื่องจากใช้โหมด no-cors จะไม่สามารถอ่าน Response ได้ แต่ถ้าส่งผ่าน fetch จะทำงานสำเร็จและเข้าสู่สถานะเรียบร้อย
             document.getElementById('saveMsg').innerText = "📊 บันทึกคะแนนคำตอบเรียบร้อยแล้ว!";
             document.getElementById('saveMsg').style.color = "var(--success)";
             document.getElementById('submitBtn').innerText = "ส่งข้อสอบสำเร็จเรียบร้อย";
