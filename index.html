@@ -320,7 +320,7 @@
     document.querySelectorAll('textarea').forEach(el => {
         el.addEventListener('paste', e => {
             e.preventDefault();
-            alert("❌ ระบบล็อกการวางข้อความ! ข้อสอบอัตนัยนี้ต้องการให้ผู้เรียนพิมพ์ด้วยตัวเองเท่านั้น");
+            alert("❌ ระบบล็อกการวางข้อความ! ต้องการให้ผู้เรียนพิมพ์ด้วยตัวเองเท่านั้น");
         });
     });
 
@@ -363,7 +363,7 @@
 
         // ตรวจสอบความถูกต้องของข้อมูลส่วนตัว
         if(!studentId || !fullName || !studentNo || !studentClass) {
-            alert("⚠️ ขออภัย: กรุณากรอกข้อมูลส่วนตัวของนักเรียนให้ครบทุกช่องก่อนส่งข้อสอบครับ"); 
+            alert("⚠️ ขออภัย: กรุณากรอกข้อมูลส่วนตัวของนักเรียนให้ครบทุกช่องก่อนส่งครับ"); 
             return;
         }
 
@@ -414,7 +414,7 @@
             // เนื่องจากใช้โหมด no-cors จะไม่สามารถอ่าน Response ได้ แต่ถ้าส่งผ่าน fetch จะทำงานสำเร็จและเข้าสู่สถานะเรียบร้อย
             document.getElementById('saveMsg').innerText = "📊 บันทึกคะแนนคำตอบเรียบร้อยแล้ว!";
             document.getElementById('saveMsg').style.color = "var(--success)";
-            document.getElementById('submitBtn').innerText = "ส่งข้อสอบสำเร็จเรียบร้อย";
+            document.getElementById('submitBtn').innerText = "ส่งคำตอบสำเร็จเรียบร้อย";
         } catch (error) {
             console.error("Submission Error: ", error);
             document.getElementById('saveMsg').innerText = "❌ เกิดข้อผิดพลาดทางเทคนิคในการติดต่อฐานข้อมูล โปรดแจ้งครูผู้สอน";
