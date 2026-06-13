@@ -239,7 +239,7 @@
 
 <div class="container">
     <h1>📝 กิจกรรม 1.3 ตอบปัญหาแนวคิดเชิงคำนวณ (ม.4)</h1>
-    <p class="notice">⚠️ ระบบจะตรวจข้อความเรียลไทม์ • ไม่อนุญาตให้คัดลอกคำตอบมาวาง (คะแนนรวมเต็ม 5 คะแนน)</p>
+    <p class="notice">⚠️ • ตรวจแบบเรียลไทม์ • ห้ามคัดลอกมาวาง </p>
 
     <div class="student-info-section">
         <div class="info-grid">
@@ -272,31 +272,7 @@
     </div>
 
     <div id="quiz-area">
-        <script>
-            // รายการโจทย์แบบ Bilingual (ไทย ควบคู่ อังกฤษ)
-            const questions = [
-                "จงอธิบายความหมายและประโยชน์ของ 'แนวคิดการแยกย่อย' (Decomposition) ในการแก้ปัญหา<br><small style='color:var(--text-muted); font-weight:normal;'>Explain the meaning and benefits of 'Decomposition' in problem-solving.</small>",
-                "จงยกตัวอย่างการใช้ 'แนวคิดการจดจำรูปแบบ' (Pattern Recognition) ในชีวิตประจำวัน<br><small style='color:var(--text-muted); font-weight:normal;'>Provide an example of using 'Pattern Recognition' in daily life.</small>",
-                "ทำไม 'แนวคิดเชิงนามธรรม' (Abstraction) ถึงสำคัญในการสร้างแบบจำลองหรือแผนผัง<br><small style='color:var(--text-muted); font-weight:normal;'>Why is 'Abstraction' important when creating models or diagrams?</small>",
-                "ลักษณะของ 'อัลกอริทึม' (Algorithm) ที่ดีควรเป็นอย่างไร และทำไมต้องมีความชัดเจน<br><small style='color:var(--text-muted); font-weight:normal;'>What are the characteristics of a good 'Algorithm', and why must it be clear?</small>",
-                "แนวคิดเชิงคำนวณสามารถนำไปใช้แก้ปัญหาที่ไม่เกี่ยวกับคอมพิวเตอร์ได้อย่างไร จงยกตัวอย่าง<br><small style='color:var(--text-muted); font-weight:normal;'>How can computational thinking be applied to solve non-computer problems? Give an example.</small>"
-            ];
-
-            // วนลูปสร้างการ์ดข้อสอบ 5 ข้ออัตโนมัติ
-            questions.forEach((q, i) => {
-                document.write(`
-                    <div class="question-card">
-                        <span class="q-text">ข้อที่ ${i+1}: ${q}</span>
-                        <textarea id="ans-${i+1}" placeholder="พิมพ์คำตอบวิเคราะห์ของคุณที่นี่..." oninput="checkLiveProgress(${i+1})"></textarea>
-                        <div class="status-row">
-                            <span>ความสมบูรณ์เนื้อหา: <span id="perc-${i+1}">0</span>%</span>
-                        </div>
-                        <div class="progress-container"><div id="bar-${i+1}" class="progress-bar"></div></div>
-                    </div>
-                `);
-            });
-        </script>
-    </div>
+        </div>
 
     <button class="btn-submit" id="submitBtn" onclick="submitQuiz()">ส่งคำตอบและบันทึกข้อมูล</button>
 
@@ -308,32 +284,122 @@
 </div>
 
 <script>
-    // ชุดคีย์เวิร์ดแบบสองภาษา [ภาษาไทย, ภาษาอังกฤษ]
-    const keywords = [
-        ["ย่อย", "เล็ก", "แบ่ง", "ง่าย", "ประกอบ", "ส่วน", "decompos", "break", "sub", "divide", "small", "part"],
-        ["รูปแบบ", "ซ้ำ", "คล้าย", "เคยเจอ", "ลักษณะ", "เปรียบเทียบ", "pattern", "recogni", "similar", "repeat", "trend", "match"],
-        ["สำคัญ", "ตัดออก", "จำเป็น", "แก่น", "แบบจำลอง", "รายละเอียด", "abstract", "focus", "ignore", "detail", "model", "concept", "main"],
-        ["ขั้นตอน", "ลำดับ", "ชัดเจน", "ทีละขั้น", "แม่นยำ", "ระบบ", "algorithm", "step", "sequence", "clear", "process", "order"],
-        ["ประยุกต์", "แก้ปัญหา", "ชีวิต", "ระบบ", "ตรรกะ", "ขั้นตอน", "apply", "solve", "life", "real", "logic", "everyday"]
+    // 1. คลังข้อสอบระดับความยากเดียวกันทั้งหมด 15 ข้อ (ครอบคลุมทั้ง 4 องค์ประกอบของแนวคิดเชิงคำนวณ)
+    const quizBank = [
+        {
+            question: "จงอธิบายความหมายและประโยชน์ของ 'แนวคิดการแยกย่อย' (Decomposition) ในการแก้ปัญหา<br><small style='color:var(--text-muted); font-weight:normal;'>Explain the meaning and benefits of 'Decomposition' in problem-solving.</small>",
+            keywords: ["ย่อย", "เล็ก", "แบ่ง", "ง่าย", "ประกอบ", "ส่วน", "decompos", "break", "sub", "divide", "small", "part"]
+        },
+        {
+            question: "จงยกตัวอย่างการใช้ 'แนวคิดการจดจำรูปแบบ' (Pattern Recognition) ในชีวิตประจำวัน<br><small style='color:var(--text-muted); font-weight:normal;'>Provide an example of using 'Pattern Recognition' in daily life.</small>",
+            keywords: ["รูปแบบ", "ซ้ำ", "คล้าย", "เคยเจอ", "ลักษณะ", "เปรียบเทียบ", "pattern", "recogni", "similar", "repeat", "trend", "match"]
+        },
+        {
+            question: "ทำไม 'แนวคิดเชิงนามธรรม' (Abstraction) ถึงสำคัญในการสร้างแบบจำลองหรือแผนผัง<br><small style='color:var(--text-muted); font-weight:normal;'>Why is 'Abstraction' important when creating models or diagrams?</small>",
+            keywords: ["สำคัญ", "ตัดออก", "จำเป็น", "แก่น", "แบบจำลอง", "รายละเอียด", "abstract", "focus", "ignore", "detail", "model", "concept", "main"]
+        },
+        {
+            question: "ลักษณะของ 'อัลกอริทึม' (Algorithm) ที่ดีควรเป็นอย่างไร และทำไมต้องมีความชัดเจน<br><small style='color:var(--text-muted); font-weight:normal;'>What are the characteristics of a good 'Algorithm', and why must it be clear?</small>",
+            keywords: ["ขั้นตอน", "ลำดับ", "ชัดเจน", "ทีละขั้น", "แม่นยำ", "ระบบ", "algorithm", "step", "sequence", "clear", "process", "order"]
+        },
+        {
+            question: "แนวคิดเชิงคำนวณสามารถนำไปใช้แก้ปัญหาที่ไม่เกี่ยวกับคอมพิวเตอร์ได้อย่างไร จงยกตัวอย่าง<br><small style='color:var(--text-muted); font-weight:normal;'>How can computational thinking be applied to solve non-computer problems? Give an example.</small>",
+            keywords: ["ประยุกต์", "แก้ปัญหา", "ชีวิต", "ระบบ", "ตรรกะ", "ขั้นตอน", "apply", "solve", "life", "real", "logic", "everyday"]
+        },
+        {
+            question: "หากต้องการวางแผนจัดงานวันเด็กแห่งชาติของโรงเรียน จะนำ 'แนวคิดการแยกย่อย' (Decomposition) มาช่วยจัดแบ่งงานได้อย่างไรบ้าง<br><small style='color:var(--text-muted); font-weight:normal;'>How can 'Decomposition' be used to manage a school Children's Day event?</small>",
+            keywords: ["แบ่งงาน", "ฝ่าย", "ซุ้ม", "อาหาร", "ย่อย", "หน้าที่", "จัดการ", "stage", "task", "event", "plan", "assign"]
+        },
+        {
+            question: "แพทย์ใช้ 'แนวคิดการจดจำรูปแบบ' (Pattern Recognition) ในการวินิจฉัยโรคจากอาการของคนไข้ได้อย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>How do doctors use 'Pattern Recognition' to diagnose diseases from symptoms?</small>",
+            keywords: ["อาการ", "ประวัติ", "วินิจฉัย", "เคยพบ", "เปรียบเทียบ", "โรค", "pattern", "symptom", "diagnos", "history", "match", "case"]
+        },
+        {
+            question: "ในการใช้แอปพลิเคชันแผนที่นำทาง (เช่น Google Maps) ข้อมูลใดบ้างที่ถูกตัดออกไปตาม 'แนวคิดเชิงนามธรรม' (Abstraction) เพื่อไม่ให้ผู้ใช้สับสน<br><small style='color:var(--text-muted); font-weight:normal;'>What details are ignored in a navigation app using 'Abstraction' to avoid clutter?</small>",
+            keywords: ["ต้นไม้", "บ้าน", "สีตึก", "ตัดออก", "ไม่จำเป็น", "ถนน", "เส้นทาง", "ignore", "detail", "traffic", "route", "map", "building"]
+        },
+        {
+            question: "จงอธิบายว่าการเขียน 'คู่มือสูตรทำอาหาร' หรือ 'ขั้นตอนการประกอบเฟอร์นิเจอร์' เกี่ยวข้องกับ 'อัลกอริทึม' (Algorithm) อย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>How do cooking recipes or furniture assembly instructions relate to algorithms?</small>",
+            keywords: ["ขั้นตอน", "คู่มือ", "ทำตาม", "ลำดับ", "ผลลัพธ์", "สำเร็จ", "step", "recipe", "instruction", "order", "follow", "guide"]
+        },
+        {
+            question: "หากนักเรียนต้องทำโครงงานวิทยาศาสตร์ 1 เรื่อง นักเรียนจะใช้ 'แนวคิดการแยกย่อย' (Decomposition) ในการวางแผนเริ่มทำโครงงานอย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>How can you apply 'Decomposition' to plan a science project?</small>",
+            keywords: ["แบ่ง", "หัวข้อ", "ทดลอง", "สืบค้น", "รายงาน", "ขั้นตอน", "เล่ม", "project", "divide", "task", "research", "experiment", "plan"]
+        },
+        {
+            question: "เจ้าร้านค้าออนไลน์สังเกตว่า 'ช่วงเวลา 20.00 - 22.00 น. สินค้าแฟชั่นจะขายดีที่สุด' พฤติกรรมนี้แสดงถึงแนวคิดเชิงคำนวณด้านใด และนำไปใช้ประโยชน์ต่ออย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>Which computational thinking skill identifies peak shopping times, and how can it be useful?</small>",
+            keywords: ["รูปแบบ", "จดจำ", "ซ้ำ", "พฤติกรรม", "สถิติ", "โปรโมชั่น", "pattern", "recogni", "time", "sale", "trend", "stock"]
+        },
+        {
+            question: "ในการเขียนสรุปใจความสำคัญจากหนังสือเรียนวิชาประวัติศาสตร์หนา 200 หน้า ให้เหลือเพียง 2 หน้า นักเรียนต้องใช้ 'แนวคิดเชิงนามธรรม' (Abstraction) อย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>How do you use 'Abstraction' to summarize a 200-page history book into 2 pages?</small>",
+            keywords: ["ใจความ", "สำคัญ", "แก่น", "ตัด", "น้ำ", "สรุป", "รายละเอียด", "abstract", "summar", "core", "main", "ignore", "detail"]
+        },
+        {
+            question: "ทำไมการเขียนอัลกอริทึมที่มี 'ลำดับขั้นตอนผิดพลาด' (Wrong Sequence) ถึงทำให้ผลลัพธ์การทำงานของระบบเสียหายหรือทำงานไม่ได้<br><small style='color:var(--text-muted); font-weight:normal;'>Why does a wrong sequence in an algorithm cause system failure or errors?</small>",
+            keywords: ["สลับ", "ผิดพลาด", "ลำดับ", "ไม่ตามขั้นตอน", "รวน", "ไม่ได้ผล", "sequence", "order", "wrong", "error", "fail", "step"]
+        },
+        {
+            question: "การที่นักเรียนจดจำแผนผังทางหนีไฟของอาคารเรียน เพื่อใช้หลบภัยเมื่อเกิดเหตุฉุกเฉิน ถือเป็นการประยุกต์ใช้แนวคิดเชิงคำนวณด้านใด จงอธิบายเหตุผล<br><small style='color:var(--text-muted); font-weight:normal;'>Remembering a fire escape plan applies which computational thinking concept? Explain.</small>",
+            keywords: ["นามธรรม", "แบบจำลอง", "เส้นทาง", "แผนผัง", "สำคัญ", "ตัดรายละเอียด", "abstract", "map", "escape", "model", "route", "sign"]
+        },
+        {
+            question: "การพัฒนาระบบสแกนใบหน้าเพื่อปลดล็อกสมาร์ตโฟน (Face ID) มีการนำ 'แนวคิดการจดจำรูปแบบ' (Pattern Recognition) ไปใช้อย่างไร<br><small style='color:var(--text-muted); font-weight:normal;'>How is 'Pattern Recognition' utilized in smartphone facial recognition systems?</small>",
+            keywords: ["ใบหน้า", "โครงสร้าง", "เปรียบเทียบ", "พิกัด", "เอกลักษณ์", "จดจำ", "face", "biomet", "pattern", "recogni", "match", "identity"]
+        }
     ];
 
-    // เปิดระบบป้องกันการก็อปปี้คำตอบมาวาง (Anti-Paste)
+    // 2. ฟังก์ชันสุ่มและเลือกโจทย์จำนวน 5 ข้อจากคลัง 15 ข้อ
+    let selectedQuiz = [];
+    function generateRandomQuiz() {
+        // คัดลอก Array โคลนออกมาเพื่อไม่ให้กระทบตระกร้าหลัก
+        let pool = [...quizBank];
+        // วนลูปสุ่มสลับตำแหน่งแบบไร้ทิศทาง (Fisher-Yates Shuffle Algorithm)
+        for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        // ดึงข้อสอบ 5 ข้อแรกที่สุ่มกระจายตัวได้เรียบร้อยแล้ว
+        selectedQuiz = pool.slice(0, 5);
+    }
+
+    // เรียกทำงานการสุ่มโจทย์ทันทีเมื่อมีการรันหรือรีเฟรชหน้าเว็บ
+    generateRandomQuiz();
+
+    // 3. เรนเดอร์การ์ดข้อสอบลงบนหน้าเพจ HTML
+    const quizArea = document.getElementById('quiz-area');
+    selectedQuiz.forEach((item, i) => {
+        quizArea.insertAdjacentHTML('beforeend', `
+            <div class="question-card">
+                <span class="q-text">ข้อที่ ${i+1}: ${item.question}</span>
+                <textarea id="ans-${i+1}" placeholder="พิมพ์คำตอบวิเคราะห์ของคุณที่นี่..." oninput="checkLiveProgress(${i+1})"></textarea>
+                <div class="status-row">
+                    <span>ความสมบูรณ์เนื้อหา: <span id="perc-${i+1}">0</span>%</span>
+                </div>
+                <div class="progress-container"><div id="bar-${i+1}" class="progress-bar"></div></div>
+            </div>
+        `);
+    });
+
+    // ระบบล็อกห้ามวางข้อความ (Anti-Paste)
     document.querySelectorAll('textarea').forEach(el => {
         el.addEventListener('paste', e => {
             e.preventDefault();
-            alert("❌ ระบบล็อกการวางข้อความ! ต้องการให้ผู้เรียนพิมพ์ด้วยตัวเองเท่านั้น");
+            alert("❌ ระบบล็อกการวางข้อความ! ต้องการให้ผู้เรียนพิมพ์วิเคราะห์ด้วยตัวเองเท่านั้น");
         });
     });
 
-    // ฟังก์ชันตรวจสอบเรียลไทม์ขณะผู้เรียนพิมพ์คำตอบ
+    // ฟังก์ชันตรวจสอบเรียลไทม์ขณะนักเรียนพิมพ์คำตอบ
     function checkLiveProgress(idx) {
         const text = document.getElementById(`ans-${idx}`).value.trim().toLowerCase();
         if(!text) { updateUI(idx, 0); return; }
 
         let matches = 0;
-        keywords[idx-1].forEach(kw => { if(text.includes(kw.toLowerCase())) matches++; });
+        // ตรวจคีย์เวิร์ดเฉพาะของข้อที่สุ่มได้จริงในรอบนั้นๆ
+        const currentKeywords = selectedQuiz[idx-1].keywords;
+        
+        currentKeywords.forEach(kw => { if(text.includes(kw.toLowerCase())) matches++; });
 
-        let maxExpectedMatches = Math.min(keywords[idx-1].length / 2, 4); 
+        let maxExpectedMatches = Math.min(currentKeywords.length / 2, 4); 
         let kwPerc = (Math.min(matches, maxExpectedMatches) / maxExpectedMatches) * 70; 
         
         let lenPerc = Math.min((text.length / 60) * 30, 30);  
@@ -343,7 +409,7 @@
         updateUI(idx, totalPerc);
     }
 
-    // ปรับปรุงแถบสีความคืบหน้าคะแนน
+    // อัปเดตแถบสีและเปอร์เซ็นต์ความคืบหน้า
     function updateUI(idx, p) {
         document.getElementById(`perc-${idx}`).innerText = p;
         document.getElementById(`bar-${idx}`).style.width = p + "%";
@@ -354,7 +420,7 @@
         else bar.style.background = "var(--success)";
     }
 
-    // ฟังก์ชันรวบรวมข้อมูลส่งเข้า Google Sheets
+    // ฟังก์ชันรวบรวมข้อมูลส่งเข้าฐานข้อมูล Google Sheets
     async function submitQuiz() {
         const studentId = document.getElementById('studentId').value.trim();
         const prefix = document.getElementById('prefix').value;
@@ -386,7 +452,9 @@
             let percent = parseFloat(document.getElementById(`perc-${i}`).innerText);
             let scoreForEachQuestion = percent / 100; 
             
-            payload[`ans${i}`] = document.getElementById(`ans-${i}`).value.trim();
+            // แนบหัวข้อโจทย์สั้นๆ ไปพร้อมกับคำตอบ เพื่อให้คุณครูดูบน Google Sheets แล้วรู้ทันทีว่าเด็กตอบโจทย์ข้อไหน
+            const shortQuestionText = selectedQuiz[i-1].question.split('<br>')[0];
+            payload[`ans${i}`] = `[โจทย์: ${shortQuestionText}] -> คำตอบ: ${document.getElementById(`ans-${i}`).value.trim()}`;
             payload[`percent${i}`] = percent.toString();
             payload[`score${i}`] = scoreForEachQuestion.toFixed(2); 
             finalTotal += scoreForEachQuestion;
